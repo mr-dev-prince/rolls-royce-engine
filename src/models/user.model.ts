@@ -1,5 +1,5 @@
-import { Table, Model, Column, PrimaryKey, AutoIncrement, Default, DataType } from 'sequelize-typescript'
-import { v4 as uuidv4 } from 'uuid'
+import { Table, Model, Column, PrimaryKey, AutoIncrement, Default, DataType, Validate } from 'sequelize-typescript'
+import { v4 as uuidv4, validate } from 'uuid'
 
 @Table({
     tableName: 'users',
@@ -19,20 +19,32 @@ export class User extends Model {
     name!: string;
 
     @Column({
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: true
+        }
     })
     email!: string;
 
-    @Column
+    @Column({
+        validate: {
+            is: /^.{8,}$/
+        }
+    })
     password!: string
 
     @Column
     profileImg!: string
 
     @Column
-    dateOfBirth!: Date
+    dob!: Date
 
-    @Column
+    @Column({
+        validate: {
+            isNumeric: true,
+            is: /^[0-9]{10}$/
+        }
+    })
     contactNumber!: string
 
     @Column
